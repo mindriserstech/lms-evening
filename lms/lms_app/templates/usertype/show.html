@@ -1,0 +1,13 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>User Type Show</title>
+    </head>
+    <body>
+        
+        <a href="{% url 'users.type.index' %}">Back</a>
+        <h4>Usertype Data</h4>
+        <span>Usertype ID: <strong>{{ data.id }}</strong></span>
+        <span>Usertype: <strong>{{ data.user_type }}</strong></span>
+    </body>
+</html>
