@@ -6,7 +6,8 @@
     <body>
         <a href="{% url 'users.type.index' %}">Back</a>
         <h4>Usertype Update</h4>
-        <form method="POST" action="#">
+        <form method="POST" action="{% url 'users.type.update' %}">
+            {% csrf_token %}
             <div class="form">
                 <input type="hidden" name="id" value="{{ data.id }}">
                 <br>

@@ -23,6 +23,7 @@
         </style>
     </head>
     <body>
+        <a href="{% url 'users.type.index' %}">Back</a>
         <div class="user_type">
             <span>{{ msg }}</span>
             <form action="{% url 'users.type.create' %}" method="POST">

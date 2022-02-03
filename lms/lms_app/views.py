@@ -3,9 +3,12 @@ from django.http import request
 
 # importing form
 from lms_app.form import UserTypeForm
+from lms_app.form import UserRegisterForm
+from lms_app.form import UserLoginForm
 
 # importing model
 from lms_app.models import UserType
+from lms_app.models import User
 # Create your views here.
 
 # display all usertypes
@@ -35,21 +38,13 @@ def usertype_create(request):
         ut = UserType(user_type=usertype)
         ut.save() 
 
-        # equivalent to 
-        # 1. INSERT INTO lms_usertype VALUES(null, "Normal");
-        # 2. INSERT INTO lms_usertype (id, user_type)
-        #  VALUES (null, "Super Admin")
-
-        # 3. Multiple item insert at a time
-        # INSET INTO lms_usertype (id, user_type)
-        # VALUES (null, "Librarian"), (null, "Visitor");
-        
         # after object is saved into database
         # we create template and return data to template
         template = 'usertype/index.html'
         
+        context = UserType.objects.all()
         # preparing response data with dictionary
-        data = {'usertype': ut, 'msg': 'Stored successfully'}
+        data = {'usertype': context, 'msg': 'Stored successfully'}
 
         # redirecting the page by rendering it
         return render(request, template, data)
@@ -65,3 +60,86 @@ def usertype_edit(request, usertype_id):
 def usertype_show(request, usertype_id):
     data = UserType.objects.get(id=usertype_id)
     return render(request, 'usertype/show.html', {'data': data})
+
+def usertype_delete(request, usertype_id):
+    ut = UserType.objects.get(id=usertype_id)
+    ut.delete()
+    msg = "Deleted Successfully"
+    context = UserType.objects.all()
+    return render(request, 'usertype/index.html', {'data': context, 'msg':msg })
+
+def usertype_update(request):
+    if request.method == "POST":
+        ut = UserType.objects.get(id=request.POST.get('id'))
+        ut.user_type = request.POST.get('user_type')
+        ut.save()
+        msg = "Updated Successfully"
+        context = UserType.objects.all()
+        return render(request, 'usertype/index.html', {'data': context, 'msg': msg})
+    else:
+        context = UserType.objects.all()
+        msg = "Error while updating"
+        return render(request, 'usertype/index.html', {'data': context, 'msg': msg})
+
+# User
+
+# returns the registration form
+def user_create(request):
+    user_form = UserRegisterForm
+    return render(request, 'users/register.html', {'form':user_form})
+
+# store or create new users
+def user_store(request):
+    if request.method == "POST":
+        fname = request.POST.get('first_name')
+        lname = request.POST.get('last_name')
+        email = request.POST.get('email')
+        contact = request.POST.get('contact')
+        password = request.POST.get('password')
+
+        user = User(first_name=fname, last_name=lname, \
+            email=email, contact=contact, password=password)
+        user.save()
+        request.session['email'] = user.email
+        if request.session.has_key('email'):
+            uname = request.session['email']
+            return render(request, 'users/index.html', {'email': uname})
+    else:
+        user_form = UserRegisterForm
+        return render(request, 'users/register.html', {'form':user_form})
+
+def user_index(request):
+    # checking session stored or not
+    if request.session.has_key('email'):
+        uname = request.session['email']
+        return render(request, 'users/index.html', {'email': uname})
+    else:
+        ul = UserLoginForm
+        return render(request, 'users/login.html', {'form': ul, \
+                'msg': "Please login to access"})
+
+def user_login(request):
+    ul = UserLoginForm
+    if request.method == "POST":
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        user = User.objects.get(email=email)
+        if user.password == password:
+
+            # storing session
+            request.session['email'] = user.email
+            return render(request, 'users/index.html', {'email': email})
+        else:
+            return render(request, 'users/login', {'form': ul, 'msg': "Please login to access"})
+    else:
+        return render(request, 'users/login.html', {'form': ul, 'msg': "Please login to access"})
+
+def user_logout(request):
+    if request.session.has_key('email'):
+        # destroying/deleting session to logout
+        del request.session['email']
+        ul = UserLoginForm
+        return render(request, 'users/login.html', {'form':ul})
+    else:
+        ul = UserLoginForm
+        return render(request, 'users/login.html', {'form':ul})

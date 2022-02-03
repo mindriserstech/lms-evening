@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>LMS | User Registration</title>
+    </head>
+    <body>
+        <h2>LMS | User Registration</h2>
+        <div class="content">
+            <form action="{% url 'users.store' %}" method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                    <input type="submit" value="REGISTER">
+            </form>
+        </div>
+    </body>
+</html>

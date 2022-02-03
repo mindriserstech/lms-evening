@@ -16,10 +16,8 @@
     </head>
     <body>
         <div class="user_type">
-            <h1>Single Object Print</h1>
-            <h3><span> {{ single_data.id }}</span>
-            <span> {{ single_data.user_type }}</span></h3>
-            <br>
+
+            <h1><a href="{% url 'users.type.create' %}">Create</a></h1>
             <h1>Multiple data show</h1>
             <table border="1">
                 <thead>
@@ -39,7 +37,7 @@
                             <td>{{ i.user_type }}</td>
                             <td><a href="{% url 'users.type.show' i.id %}"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                             <td><a href="{% url 'users.type.edit' i.id %}"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
-                            <td><a href="{% url 'users.type.show' i.id %}"><i class="fa fa-trash" aria-hidden="true"></i>                            </a></td>
+                            <td><a href="{% url 'users.type.delete' i.id %}"><i class="fa fa-trash" aria-hidden="true"></i>                            </a></td>
                             <!-- <td><a href="show/{{ i.id }}"><i class="fa fa-trash" aria-hidden="true"></i>                            </a></td> -->
                             <!-- URL Breakdown
                                 url = http://localhost:8000
