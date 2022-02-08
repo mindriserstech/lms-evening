@@ -18,3 +18,10 @@ class User(models.Model):
 
     class Meta:
         db_table = "lms_users"
+
+class UserProfile(models.Model):
+    image_url = models.FileField(upload_to='documents/profile/')
+    citizenship_url = models.FileField(upload_to='documents/citizenship/')
+
+    class Meta:
+        db_table = "lms_user_document"

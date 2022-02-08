@@ -13,9 +13,11 @@ urlpatterns = [
 
 
     # user
-    path('users/', views.user_index, name="user.index"),
+    path('users/', views.user_index, name="users.index"),
     path('users/create/', views.user_create, name="users.create"),
     path('users/store/', views.user_store, name="users.store"),
     path('users/login/', views.user_login, name="users.login"),
-    path('users/logout/', views.user_logout, name="users.logout")
+    path('users/logout/', views.user_logout, name="users.logout"),
+    path('users/document', views.user_document, name="users.document")
+
 ]

@@ -1,5 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import request
+from lms_app.models import UserProfile
+from lms_app.form import UserProfileForm
+from django.core.files.storage import FileSystemStorage
 
 # importing form
 from lms_app.form import UserTypeForm
@@ -107,7 +110,6 @@ def user_store(request):
     else:
         user_form = UserRegisterForm
         return render(request, 'users/register.html', {'form':user_form})
-
 def user_index(request):
     # checking session stored or not
     if request.session.has_key('email'):
@@ -117,7 +119,6 @@ def user_index(request):
         ul = UserLoginForm
         return render(request, 'users/login.html', {'form': ul, \
                 'msg': "Please login to access"})
-
 def user_login(request):
     ul = UserLoginForm
     if request.method == "POST":
@@ -125,7 +126,6 @@ def user_login(request):
         password = request.POST.get('password')
         user = User.objects.get(email=email)
         if user.password == password:
-
             # storing session
             request.session['email'] = user.email
             return render(request, 'users/index.html', {'email': email})
@@ -133,6 +133,17 @@ def user_login(request):
             return render(request, 'users/login', {'form': ul, 'msg': "Please login to access"})
     else:
         return render(request, 'users/login.html', {'form': ul, 'msg': "Please login to access"})
+
+# user profile document upload
+def user_document(request):
+    if request.method == "POST":
+        form = UserProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+        return render(request, 'users/index.html')
+    else:
+        form = UserProfileForm
+        return render(request, 'users/document.html', {'form': form})
 
 def user_logout(request):
     if request.session.has_key('email'):

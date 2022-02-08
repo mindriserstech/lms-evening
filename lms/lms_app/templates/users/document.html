@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>LMS | User Document</h1>
+        <h4><a href="{% url 'users.index' %}">HOME</a></h4>
+        <div class="content">
+            <form action="{% url 'users.document' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                    <input type="submit" value="UPLOAD">
+            </form>
+        </div>
+    </body>
+</html>
