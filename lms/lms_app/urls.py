@@ -18,6 +18,7 @@ urlpatterns = [
     path('users/store/', views.user_store, name="users.store"),
     path('users/login/', views.user_login, name="users.login"),
     path('users/logout/', views.user_logout, name="users.logout"),
-    path('users/document', views.user_document, name="users.document")
+    path('users/document', views.user_document, name="users.document"),
+    path('users/send-mail', views.send_email, name="users.mail"),
 
 ]

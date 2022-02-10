@@ -1,8 +1,9 @@
 from django.shortcuts import redirect, render
-from django.http import request
+from django.http import HttpResponse, request
 from lms_app.models import UserProfile
 from lms_app.form import UserProfileForm
 from django.core.files.storage import FileSystemStorage
+from django.core.mail import send_mail as sm
 
 # importing form
 from lms_app.form import UserTypeForm
@@ -154,3 +155,17 @@ def user_logout(request):
     else:
         ul = UserLoginForm
         return render(request, 'users/login.html', {'form':ul})
+
+def send_email(request):
+    res = sm(
+        subject = 'Gmail Email Send Test',
+        message = 'Here is the message we are send you to test our gmail send message',
+        from_email = 'c4crypt@gmail.com',
+        recipient_list = ['sandesh@cac.edu.au'],
+        fail_silently = False,
+
+        # fail_silently takes boolean value. If set False it will raise smtplib.STMPException if the error
+        # occurs while sending the email
+    )
+
+    return HttpResponse(request, "Email sent to" + str(res) + " successfully")

@@ -131,3 +131,15 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+#  smtp config to send emails via gmail
+EMAIL_USE_TLS = True # TLS/SSL secure connection protocol
+EMAIL_PORT = 587 # google email server port
+EMAIL_HOST = 'smtp.gmail.com' # google email server
+EMAIL_HOST_USER = 'c4crypt@gmail.com'  # google account
+EMAIL_HOST_PASSWORD = 'sukljjfkzpaownqj' # google account app password 
+# note:- if the 2step verification is enabled then we have to create app password and set app password as host password
+# otherwise we can simply use google login password
+# recommend to use app password
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' # django modules
